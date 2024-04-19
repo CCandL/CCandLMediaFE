@@ -1,0 +1,30 @@
+name: ccandl_media
+description: "The new multi media platform only for code."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.1
+  shared_preferences: ^2.0.8
+  cupertino_icons: ^1.0.6
+  image_picker: ^0.8.4+2
+  permission_handler: ^10.2.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  assets:
+    - lib/assets/img/
+
+  uses-material-design: true
