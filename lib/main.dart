@@ -1,3 +1,4 @@
+import 'package:ccandl_media/widgets/home.dart';
 import 'package:ccandl_media/widgets/subscriptions.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,7 @@ void main() {
 
 const Color bottomNavBgColor = Color(0xFF17203A);
 const Color darkBackground = Color(0xFF1C1C1E);
+bool darkMode = false;
 
 class MyApp extends StatefulWidget {
   @override
@@ -20,8 +22,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool darkMode = false;
-
   @override
   void initState() {
     super.initState();
@@ -33,11 +33,6 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       darkMode = prefs.getBool('darkMode') ?? false;
     });
-  }
-
-  _saveDarkMode(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('darkMode', value);
   }
 
   @override
@@ -121,60 +116,10 @@ class _HomeState extends State<Home> {
     );
   }
 
-  AppBar? _buildAppBar(int index) {
-    switch (index) {
-      case 0:
-        return AppBar(
-          title: const Text(
-            'Home',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              decoration: TextDecoration.none,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 1,
-          leading: null,
-        );
-      case 1:
-        return AppBar(
-          title: const Text(
-            'Add',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              decoration: TextDecoration.none,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 1,
-          leading: null,
-        );
-      case 2:
-        return AppBar(
-          title: const Text(
-            'Subscriptions',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              decoration: TextDecoration.none,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 1,
-          leading: null,
-        );
-      default:
-        return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: _buildAppBar(_selectedIndex),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -234,46 +179,6 @@ class _HomeState extends State<Home> {
                 label: 'Settings',
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class HomeContent extends StatefulWidget {
-  const HomeContent({super.key});
-
-  @override
-  State<HomeContent> createState() => _HomeContentState();
-}
-
-class _HomeContentState extends State<HomeContent> {
-  bool darkMode = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadDarkMode();
-  }
-
-  _loadDarkMode() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      darkMode = prefs.getBool('darkMode') ?? false;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: darkMode ? darkBackground : Colors.grey[100],
-      body: Center(
-        child: Text(
-          'Home Content',
-          style: TextStyle(
-            fontSize: 24,
-            color: darkMode ? Colors.white : Colors.black,
           ),
         ),
       ),

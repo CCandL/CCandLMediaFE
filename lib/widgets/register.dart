@@ -74,17 +74,17 @@ class _RegisterState extends State<Register> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 7.5),
                   buildTextField('Username', TextEditingController(), false),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 7.5),
                   buildTextField('Password', TextEditingController(), true),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 7.5),
                   buildTextField('E-Mail', TextEditingController(), false),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 7.5),
                   buildTextField('First name', TextEditingController(), false),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 7.5),
                   buildTextField('Last name', TextEditingController(), false),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 7.5),
                   Row(
                     children: [
                       Checkbox(
@@ -98,13 +98,13 @@ class _RegisterState extends State<Register> {
                       Text('Accept all terms and conditions'),
                     ],
                   ),
-                  const SizedBox(height: 5.0),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.only(
+                        top: 10.0), // Updated padding value
                     child: OutlinedButton(
                       onPressed: _submitForm,
                       style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(130, 50),
+                        minimumSize: const Size(125, 45),
                         backgroundColor: Colors.red[400],
                         side: BorderSide(
                           color: Colors.red[400]!,

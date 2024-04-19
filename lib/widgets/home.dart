@@ -1,17 +1,15 @@
+import 'package:ccandl_media/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Add extends StatefulWidget {
-  const Add({super.key});
+class HomeContent extends StatefulWidget {
+  const HomeContent({super.key});
 
   @override
-  State<Add> createState() => _AddState();
+  State<HomeContent> createState() => _HomeContentState();
 }
 
-class _AddState extends State<Add> {
-  Color darkBackground = const Color(0xFF1C1C1E);
-  bool darkMode = false;
-
+class _HomeContentState extends State<HomeContent> {
   @override
   void initState() {
     super.initState();
@@ -31,7 +29,7 @@ class _AddState extends State<Add> {
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
         title: const Text(
-          'Add',
+          'Home',
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
@@ -42,11 +40,12 @@ class _AddState extends State<Add> {
         elevation: 1,
         leading: null,
       ),
-      body: const Center(
+      body: Center(
         child: Text(
-          'Add',
+          'Home Content',
           style: TextStyle(
             fontSize: 24,
+            color: darkMode ? Colors.white : Colors.black,
           ),
         ),
       ),

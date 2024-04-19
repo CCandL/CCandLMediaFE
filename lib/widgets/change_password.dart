@@ -22,6 +22,8 @@ class _LoginState extends State<ChangePassword> {
   String _newPassword = '';
   bool hidePassword = true;
   bool darkMode = false;
+  Color darkBackground = const Color(0xFF1C1C1E);
+  Color darkContainerBg = Colors.grey[800]!;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _LoginState extends State<ChangePassword> {
     controller1 = TextEditingController();
     controller2 = TextEditingController();
     controller3 = TextEditingController();
+    _loadDarkMode();
   }
 
   @override
@@ -40,7 +43,33 @@ class _LoginState extends State<ChangePassword> {
   }
 
   void _submitForm() async {
-    // Hier kommt die Implementierung für die Formularüberprüfung und -sendung
+    if (_formKey.currentState!.validate()) {
+      // Überprüfen, ob die Passworte übereinstimmen
+      if (controller2.text != controller3.text) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Die Passwörter stimmen nicht überein')),
+        );
+        return;
+      }
+    }
+    // final bool success = await changePassword(controller1.text, controller3.text);
+
+    // if (success) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Passwort erfolgreich geändert')),
+    //   );
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Fehler beim Ändern des Passworts')),
+    //   );
+    // }
+  }
+
+  _loadDarkMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      darkMode = prefs.getBool('darkMode') ?? false;
+    });
   }
 
   Widget buildTextField(String labelText, TextEditingController controller,
@@ -94,19 +123,11 @@ class _LoginState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: darkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: darkMode ? darkBackground : Colors.grey[100],
         elevation: 1,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color.fromARGB(255, 226, 106, 152),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        leading: null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(5.0),
@@ -120,16 +141,18 @@ class _LoginState extends State<ChangePassword> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: darkMode ? darkContainerBg : Colors.grey[100],
                     borderRadius: BorderRadius.circular(16.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+                    boxShadow: darkMode
+                        ? null
+                        : [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),

@@ -1,3 +1,4 @@
+import 'package:ccandl_media/main.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,14 +10,15 @@ class Subscriptions extends StatefulWidget {
 }
 
 class _SubscriptionsState extends State<Subscriptions> {
-  Color darkBackground = Color(0xFF1C1C1E);
-  bool darkMode = false;
+  Color darkBackground = const Color(0xFF1C1C1E);
 
   @override
   void initState() {
     super.initState();
     _loadDarkMode();
   }
+
+  bool darkMode = false;
 
   _loadDarkMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,7 +30,19 @@ class _SubscriptionsState extends State<Subscriptions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkMode ? darkBackground : Colors.grey[100],
+      appBar: AppBar(
+        title: const Text(
+          'Subscriptions',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            decoration: TextDecoration.none,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: darkMode ? darkBackground : Colors.grey[100],
+        elevation: 1,
+        leading: null,
+      ),
       body: const Center(
         child: Text(
           'Subscriptions',

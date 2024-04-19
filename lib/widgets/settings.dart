@@ -163,18 +163,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
-                          child: buildNotificationOptionRow(
-                            "Accounting",
-                            accountingNotification,
-                            (bool newValue) {
-                              setState(() {
-                                accountingNotification = newValue;
-                              });
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
                           child: buildNotificationOptionRowisDarkMode(
                             darkMode,
                             (bool newValue) {
@@ -191,7 +179,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               const SizedBox(
-                height: 25,
+                height: 15,
               ),
               Center(
                 child: OutlinedButton(

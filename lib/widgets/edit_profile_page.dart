@@ -191,7 +191,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               buildTextField("Last name", "Mustermann", false, darkMode),
               buildTextField("E-mail", "max@mustermann.de", false, darkMode),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,13 +307,14 @@ class ProfilePictureZoom extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.close,
-        //       color: darkMode ? Colors.white : Colors.black),
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
-        //   },
-        // ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.close,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Center(
         child: Container(
