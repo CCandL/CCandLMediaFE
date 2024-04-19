@@ -212,10 +212,14 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 10),
                         TextButton(
+                          style: ButtonStyle(
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                          ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/register');
                           },
-                          child: const Text('Noch kein Konto? Registrieren'),
+                          child: Text('Noch kein Konto? Registrieren'),
                         ),
                       ],
                     ),

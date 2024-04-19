@@ -12,22 +12,28 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool hidePassword = true;
+  Color darkBackground = Color(0xFF1C1C1E);
+  Color lightGray = Color(0xFFB0B0B3);
+  bool darkMode = false;
   final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
+    bool darkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: darkMode ? Colors.grey[850] : Colors.grey[100],
       appBar: AppBar(
         title: const Text(
           'Edit Profile',
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
+            // color: darkMode ? Colors.white : Colors.black,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: darkMode ? Colors.grey[900] : Colors.white,
         elevation: 1,
         leading: IconButton(
           icon: const Icon(
@@ -66,7 +72,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 4,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color: darkMode ? Colors.white : Colors.grey[200]!,
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -112,7 +118,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     children: <Widget>[
                                       ListTile(
                                         leading: Icon(Icons.photo_library),
-                                        title: Text('Foto auswählen'),
+                                        title: Text('Foto auswählen',
+                                            style: TextStyle(
+                                              color: darkMode
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            )),
                                         onTap: () async {
                                           Navigator.pop(context);
                                           final XFile? image =
@@ -125,7 +136,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       ),
                                       ListTile(
                                         leading: Icon(Icons.camera_alt),
-                                        title: Text('Kamera öffnen'),
+                                        title: Text('Kamera öffnen',
+                                            style: TextStyle(
+                                              color: darkMode
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            )),
                                         onTap: () async {
                                           Navigator.pop(context);
                                           final XFile? image =
@@ -152,7 +168,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             shape: BoxShape.circle,
                             border: Border.all(
                               width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
+                              color:
+                                  darkMode ? Colors.white : Colors.grey[200]!,
                             ),
                             color: Colors.pink,
                           ),
@@ -169,10 +186,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(
                 height: 20,
               ),
-              buildTextField("Username", "_Max_", false),
-              buildTextField("First name", "Max", false),
-              buildTextField("Last name", "Mustermann", false),
-              buildTextField("E-mail", "max@mustermann.de", false),
+              buildTextField("Username", "_Max_", false, darkMode),
+              buildTextField("First name", "Max", false, darkMode),
+              buildTextField("Last name", "Mustermann", false, darkMode),
+              buildTextField("E-mail", "max@mustermann.de", false, darkMode),
               const SizedBox(
                 height: 20,
               ),
@@ -234,8 +251,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildTextField(
-      String labelText, String initialText, bool isPasswordTextField) {
+  Widget buildTextField(String labelText, String initialText,
+      bool isPasswordTextField, bool darkMode) {
     TextEditingController controller = TextEditingController(text: initialText);
 
     return Padding(
@@ -243,6 +260,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: TextField(
         controller: controller,
         obscureText: isPasswordTextField ? hidePassword : false,
+        style: TextStyle(color: darkMode ? Colors.white : Colors.black),
         decoration: InputDecoration(
           suffixIcon: isPasswordTextField
               ? IconButton(
@@ -265,8 +283,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           contentPadding: const EdgeInsets.only(bottom: 3),
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintStyle: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+          hintStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: darkMode ? Colors.white : Colors.black),
         ),
       ),
     );
@@ -280,17 +300,20 @@ class ProfilePictureZoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool darkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.7),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.close,
+        //       color: darkMode ? Colors.white : Colors.black),
+        //   onPressed: () {
+        //     Navigator.of(context).pop();
+        //   },
+        // ),
       ),
       body: Center(
         child: Container(

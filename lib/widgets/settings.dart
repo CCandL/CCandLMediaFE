@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:ccandl_media/widgets/src.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ccandl_media/widgets/edit_profile_page.dart';
+import 'package:ccandl_media/widgets/change_password.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -89,15 +91,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 10,
               ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: buildAccountOptionRow(context, "Change Password",
-                      route: MaterialPageRoute(
-                          builder: (context) => const EditProfilePage()))),
+                padding: const EdgeInsets.only(bottom: 15.0),
+                child: buildAccountOptionRow(
+                  context,
+                  "Change password",
+                  route: MaterialPageRoute(
+                      builder: (context) => const ChangePassword()),
+                ),
+              ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: buildAccountOptionRow(context, "Account Settings",
-                      route: MaterialPageRoute(
-                          builder: (context) => const EditProfilePage()))),
+                padding: const EdgeInsets.only(bottom: 15.0),
+                child: buildAccountOptionRow(
+                  context,
+                  "Account settings",
+                  route: MaterialPageRoute(
+                      builder: (context) => const EditProfilePage()),
+                ),
+              ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: buildAccountOptionRow(context, "Language",

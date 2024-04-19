@@ -44,7 +44,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        appBarTheme: darkMode
+            ? AppBarTheme(backgroundColor: Colors.grey[900])
+            : AppBarTheme(backgroundColor: Colors.grey[100]),
+      ),
       themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
