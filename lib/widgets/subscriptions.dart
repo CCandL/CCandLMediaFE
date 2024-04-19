@@ -9,8 +9,8 @@ class Subscriptions extends StatefulWidget {
 }
 
 class _SubscriptionsState extends State<Subscriptions> {
-  Color darkBackground = const Color(0xFF1C1C1E);
-  bool darkmode = false;
+  Color darkBackground = Color(0xFF1C1C1E);
+  bool darkMode = false;
 
   @override
   void initState() {
@@ -21,14 +21,14 @@ class _SubscriptionsState extends State<Subscriptions> {
   _loadDarkMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      darkmode = prefs.getBool('darkMode') ?? false;
+      darkMode = prefs.getBool('darkMode') ?? false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkmode ? darkBackground : Colors.grey[100],
+      backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       body: const Center(
         child: Text(
           'Subscriptions',

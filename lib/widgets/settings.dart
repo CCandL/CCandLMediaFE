@@ -55,9 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           centerTitle: true,
-          backgroundColor: darkMode
-              ? darkBackground
-              : Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: darkMode ? darkBackground : Colors.grey[100],
           elevation: 1,
           leading: null,
         ),
@@ -254,7 +252,7 @@ class _SettingsPageState extends State<SettingsPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
+                color: Colors.grey[400],
               ),
             )
           : Text(
