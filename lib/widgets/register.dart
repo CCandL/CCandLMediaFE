@@ -22,15 +22,15 @@ class _RegisterState extends State<Register> {
       if (_agreeToTerms) {
         _formKey.currentState!.save();
 
-        // Hier können Sie die eingegebenen Daten verarbeiten oder absenden
         print('E-Mail: $_email');
         print('Passwort: $_password');
         print('First Name: $_firstName');
         print('Last Name: $_lastName');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Bitte stimmen Sie den Nutzungsbedingungen zu')),
+          const SnackBar(
+            content: Text('Bitte stimmen Sie den Nutzungsbedingungen zu'),
+          ),
         );
       }
     }
@@ -55,81 +55,129 @@ class _RegisterState extends State<Register> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              buildTextField('Username', TextEditingController(), false),
-              const SizedBox(height: 16.0),
-              buildTextField('Password', TextEditingController(), true),
-              const SizedBox(height: 16.0),
-              buildTextField('E-Mail', TextEditingController(), false),
-              const SizedBox(height: 16.0),
-              buildTextField('First name', TextEditingController(), false),
-              const SizedBox(height: 16.0),
-              buildTextField('Last name', TextEditingController(), false),
-              const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Checkbox(
-                    value: _agreeToTerms,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _agreeToTerms = value!;
-                      });
-                    },
-                  ),
-                  Text('Accept all terms and conditions'),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text('Register'),
-                ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3),
               ),
             ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10.0),
+                  buildTextField('Username', TextEditingController(), false),
+                  const SizedBox(height: 10.0),
+                  buildTextField('Password', TextEditingController(), true),
+                  const SizedBox(height: 10.0),
+                  buildTextField('E-Mail', TextEditingController(), false),
+                  const SizedBox(height: 10.0),
+                  buildTextField('First name', TextEditingController(), false),
+                  const SizedBox(height: 10.0),
+                  buildTextField('Last name', TextEditingController(), false),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _agreeToTerms,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _agreeToTerms = value!;
+                          });
+                        },
+                      ),
+                      Text('Accept all terms and conditions'),
+                    ],
+                  ),
+                  const SizedBox(height: 5.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: OutlinedButton(
+                      onPressed: _submitForm,
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(130, 50),
+                        backgroundColor: Colors.red[400],
+                        side: BorderSide(
+                          color: Colors.red[400]!,
+                          width: 4.0,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                      ),
+                      child: const Text(
+                        "Register",
+                        style: TextStyle(
+                          fontSize: 20,
+                          letterSpacing: 2.2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
   }
-}
 
-Widget buildTextField(String labelText, TextEditingController controller,
-    bool isPasswordTextField) {
-  bool hidePassword = true;
-
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 35.0),
-    child: TextField(
-      controller: controller,
-      obscureText: isPasswordTextField && hidePassword,
-      decoration: InputDecoration(
-        suffixIcon: isPasswordTextField
-            ? IconButton(
-                onPressed: () {
-                  // Hier sollte man den Zustand im übergeordneten Widget aktualisieren
-                },
-                icon: hidePassword
-                    ? const Icon(
-                        Icons.visibility_off,
-                        color: Colors.red,
-                      )
-                    : const Icon(
-                        Icons.visibility,
-                        color: Colors.green,
-                      ),
-              )
-            : null,
-        contentPadding: const EdgeInsets.only(bottom: 3),
-        labelText: labelText,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintStyle: const TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+  Widget buildTextField(String labelText, TextEditingController controller,
+      bool isPasswordTextField) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 650.0,
+        ),
+        child: TextField(
+          controller: controller,
+          obscureText: isPasswordTextField && hidePassword,
+          style: const TextStyle(
+            fontSize: 14.0,
+          ),
+          decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        hidePassword = !hidePassword;
+                      });
+                    },
+                    icon: hidePassword
+                        ? const Icon(
+                            Icons.visibility_off,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.visibility,
+                            color: Colors.green,
+                          ),
+                  )
+                : null,
+            labelText: labelText,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

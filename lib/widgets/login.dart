@@ -85,34 +85,46 @@ class _LoginState extends State<Login> {
   Widget buildTextField(String labelText, TextEditingController controller,
       bool isPasswordTextField) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        controller: controller,
-        obscureText: isPasswordTextField && hidePassword,
-        decoration: InputDecoration(
-          suffixIcon: isPasswordTextField
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidePassword = !hidePassword;
-                    });
-                  },
-                  icon: hidePassword
-                      ? const Icon(
-                          Icons.visibility_off,
-                          color: Colors.red,
-                        )
-                      : const Icon(
-                          Icons.visibility,
-                          color: Colors.green,
-                        ),
-                )
-              : null,
-          contentPadding: const EdgeInsets.only(bottom: 3),
-          labelText: labelText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintStyle: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 650.0,
+        ),
+        child: TextField(
+          controller: controller,
+          obscureText: isPasswordTextField && hidePassword,
+          style: const TextStyle(
+            fontSize: 14.0,
+          ),
+          decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        hidePassword = !hidePassword;
+                      });
+                    },
+                    icon: hidePassword
+                        ? const Icon(
+                            Icons.visibility_off,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.visibility,
+                            color: Colors.green,
+                          ),
+                  )
+                : null,
+            labelText: labelText,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
     );
@@ -127,84 +139,110 @@ class _LoginState extends State<Login> {
         padding: const EdgeInsets.all(5.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              const Text(
-                'Login',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'OpenSans',
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                height: 200.0,
-                width: 200.0,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 4,
-                    color: Theme.of(context).scaffoldBackgroundColor,
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 150.0,
+                  width: 150.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.asset('lib/assets/img/ccl_Logo_colored.png'),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      color: Colors.black.withOpacity(0.1),
-                      offset: Offset(1, 10),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(16.0), // Abrunden des Containers
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            Colors.grey.withOpacity(0.5), // Farbe des Schattens
+                        spreadRadius: 5, // Ausbreitung des Schattens
+                        blurRadius: 7, // Unschärfe des Schattens
+                        offset: Offset(0, 3), // Position des Schattens
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField('Username', controller1, false),
+                        const SizedBox(height: 10.0),
+                        buildTextField('Password', controller2, true),
+                        const SizedBox(height: 20.0),
+                        OutlinedButton(
+                          onPressed: _submitForm,
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(130, 50),
+                            backgroundColor: Colors.red[400],
+                            side: BorderSide(
+                              color: Colors.red[400]!,
+                              width: 4.0,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontSize: 20,
+                              letterSpacing: 2.2,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          child: const Text('Noch kein Konto? Registrieren'),
+                        ),
+                      ],
                     ),
-                  ],
-                  shape: BoxShape.circle,
+                  ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Image.asset('lib/assets/img/ccl_Logo_colored.png'),
-                ),
-              ),
-              const SizedBox(height: 5),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(height: 10.0),
-                  buildTextField('Username', controller1, false),
-                  const SizedBox(height: 10.0),
-                  buildTextField('Password', controller2, true),
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Login'),
-              ),
-              const SizedBox(height: 15),
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
+
+                const SizedBox(height: 15),
+                const Center(
+                  child: Text(
                     "- OR -",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 10.0),
-                  Text('Login with'),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
                       onTap: () => print('Login with Apple'),
                       child: Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: 60.0,
-                          width: 60.0,
+                          height: 90.0,
+                          width: 90.0,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
@@ -226,10 +264,10 @@ class _LoginState extends State<Login> {
                     GestureDetector(
                       onTap: () => print('Login with Google'),
                       child: Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: 60.0,
-                          width: 60.0,
+                          height: 90.0,
+                          width: 90.0,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
@@ -250,15 +288,9 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 10.0),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: const Text('Noch kein Konto? Registrieren'),
-              ),
-            ],
+                // const SizedBox(height: 10),
+              ],
+            ),
           ),
         ),
       ),

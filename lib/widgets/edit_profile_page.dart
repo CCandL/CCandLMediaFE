@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -11,15 +12,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool hidePassword = true;
-
-  Future<void> _getImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      // Hier kannst du den Code hinzufügen, um das ausgewählte Bild zu speichern oder anzuzeigen
-    }
-  }
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +30,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color.fromARGB(255, 226, 106, 152),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color.fromARGB(255, 226, 106, 152),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.only(left: 16, top: 20, right: 16),
@@ -64,71 +58,113 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 height: 10,
               ),
               Center(
-                child: Stack(children: [
-                  Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 4,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          spreadRadius: 2,
-                          blurRadius: 10,
-                          color: Colors.black.withOpacity(0.1),
-                          offset: const Offset(1, 10),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 4,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                         ),
-                      ],
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(
-                          5.0), // Hier können Sie den gewünschten Abstand einstellen
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('lib/assets/img/google.png'),
-                            fit: BoxFit.contain,
+                        boxShadow: [
+                          BoxShadow(
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            color: Colors.black.withOpacity(0.1),
+                            offset: const Offset(1, 10),
                           ),
-                          shape: BoxShape.circle,
+                        ],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('lib/assets/img/google.png'),
+                              fit: BoxFit.contain,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () async {
-                        final ImagePicker _picker = ImagePicker();
-                        final XFile? image = await _picker.pickImage(
-                            source: ImageSource.gallery);
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () async {
+                          final PermissionStatus cameraPermissionStatus =
+                              await Permission.camera.request();
+                          final PermissionStatus galleryPermissionStatus =
+                              await Permission.photos.request();
 
-                        if (image != null) {
-                          // Hier kannst du den Code hinzufügen, um das ausgewählte Bild zu speichern oder anzuzeigen
-                        }
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                          if (cameraPermissionStatus.isGranted &&
+                              galleryPermissionStatus.isGranted) {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SafeArea(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      ListTile(
+                                        leading: Icon(Icons.photo_library),
+                                        title: Text('Foto auswählen'),
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          final XFile? image =
+                                              await _picker.pickImage(
+                                                  source: ImageSource.gallery);
+                                          if (image != null) {
+                                            // Hier kannst du den Code hinzufügen, um das ausgewählte Bild zu speichern oder anzuzeigen
+                                          }
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.camera_alt),
+                                        title: Text('Kamera öffnen'),
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          final XFile? image =
+                                              await _picker.pickImage(
+                                                  source: ImageSource.camera);
+                                          if (image != null) {
+                                            // Hier kannst du den Code hinzufügen, um das aufgenommene Bild zu speichern oder anzuzeigen
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            // Hier kannst du den Code hinzufügen, um den Benutzer über die fehlenden Berechtigungen zu informieren
+                          }
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 4,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                            color: Colors.pink,
                           ),
-                          color: Colors.pink,
-                        ),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ]),
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -172,7 +208,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.green[600],
-                      side: BorderSide(color: Colors.green[600]!, width: 2.0),
+                      side: BorderSide(
+                        color: Colors.green[600]!,
+                        width: 2.0,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -185,9 +224,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         color: Colors.white,
                       ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

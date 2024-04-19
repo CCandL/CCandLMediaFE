@@ -14,8 +14,8 @@ dependencies:
   http: ^1.2.1
   shared_preferences: ^2.0.8
   cupertino_icons: ^1.0.6
-  image_picker: ^0.8.4+2
-  permission_handler: ^10.2.0
+  image_picker: ^1.1.0
+  permission_handler: ^11.3.1
 
 
 dev_dependencies:
