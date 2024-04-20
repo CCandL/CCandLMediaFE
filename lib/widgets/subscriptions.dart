@@ -10,15 +10,15 @@ class Subscriptions extends StatefulWidget {
 }
 
 class _SubscriptionsState extends State<Subscriptions> {
+  bool darkMode = false;
   Color darkBackground = const Color(0xFF1C1C1E);
+  Color darkContainerBg = Colors.grey[800]!;
 
   @override
   void initState() {
     super.initState();
     _loadDarkMode();
   }
-
-  bool darkMode = false;
 
   _loadDarkMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -30,12 +30,14 @@ class _SubscriptionsState extends State<Subscriptions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Subscriptions',
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
+            color: darkMode ? Colors.white : darkBackground,
           ),
         ),
         centerTitle: true,
@@ -43,11 +45,12 @@ class _SubscriptionsState extends State<Subscriptions> {
         elevation: 1,
         leading: null,
       ),
-      body: const Center(
+      body: Center(
         child: Text(
-          'Subscriptions',
+          'Subscriptions Content',
           style: TextStyle(
             fontSize: 24,
+            color: darkMode ? Colors.white : Colors.black,
           ),
         ),
       ),

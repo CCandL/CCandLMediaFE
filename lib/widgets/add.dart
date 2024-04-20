@@ -9,8 +9,9 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
-  Color darkBackground = const Color(0xFF1C1C1E);
   bool darkMode = false;
+  Color darkBackground = const Color(0xFF1C1C1E);
+  Color darkContainerBg = Colors.grey[800]!;
 
   @override
   void initState() {
@@ -30,11 +31,12 @@ class _AddState extends State<Add> {
     return Scaffold(
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Add',
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
+            color: darkMode ? Colors.white : darkBackground,
           ),
         ),
         centerTitle: true,
@@ -42,11 +44,12 @@ class _AddState extends State<Add> {
         elevation: 1,
         leading: null,
       ),
-      body: const Center(
+      body: Center(
         child: Text(
-          'Add',
+          'Add Content',
           style: TextStyle(
             fontSize: 24,
+            color: darkMode ? Colors.white : Colors.black,
           ),
         ),
       ),

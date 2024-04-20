@@ -10,6 +10,10 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeContent> {
+  bool darkMode = false;
+  Color darkBackground = const Color(0xFF1C1C1E);
+  Color darkContainerBg = Colors.grey[800]!;
+
   @override
   void initState() {
     super.initState();
@@ -28,11 +32,12 @@ class _HomeContentState extends State<HomeContent> {
     return Scaffold(
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Home',
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
+            color: darkMode ? Colors.white : darkBackground,
           ),
         ),
         centerTitle: true,

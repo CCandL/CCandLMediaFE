@@ -47,7 +47,6 @@ class _SettingsPageState extends State<SettingsPage> {
       navigatorKey: navigatorKey,
       theme: darkMode ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
-        backgroundColor: darkMode ? darkBackground : Colors.grey[100],
         appBar: AppBar(
           title: const Text(
             'Settings',

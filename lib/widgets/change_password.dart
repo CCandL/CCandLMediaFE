@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ccandl_media/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -125,8 +126,17 @@ class _LoginState extends State<ChangePassword> {
     return Scaffold(
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
+        title: Text(
+          'Change Password',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            decoration: TextDecoration.none,
+            color: darkMode ? Colors.white : darkBackground,
+          ),
+        ),
+        centerTitle: true,
         backgroundColor: darkMode ? darkBackground : Colors.grey[100],
-        elevation: 1,
+        elevation: darkMode ? 0 : 1, // Kein Schatten im Dark Mode
         leading: null,
       ),
       body: Padding(
@@ -159,10 +169,10 @@ class _LoginState extends State<ChangePassword> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text(
+                        Text(
                           'Change Password',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: darkMode ? Colors.white : Colors.black,
                             fontFamily: 'OpenSans',
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold,

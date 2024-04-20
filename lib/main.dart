@@ -13,8 +13,9 @@ void main() {
 }
 
 const Color bottomNavBgColor = Color(0xFF17203A);
-const Color darkBackground = Color(0xFF1C1C1E);
 bool darkMode = false;
+Color darkBackground = const Color(0xFF1C1C1E);
+Color darkContainerBg = Colors.grey[800]!;
 
 class MyApp extends StatefulWidget {
   @override
