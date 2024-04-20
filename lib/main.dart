@@ -31,9 +31,12 @@ class _MyAppState extends State<MyApp> {
 
   _loadDarkMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      darkMode = prefs.getBool('darkMode') ?? false;
-    });
+    bool? currentDarkMode = prefs.getBool('darkMode');
+    if (currentDarkMode != null && currentDarkMode != darkMode) {
+      setState(() {
+        darkMode = currentDarkMode;
+      });
+    }
   }
 
   @override
@@ -56,6 +59,7 @@ class _MyAppState extends State<MyApp> {
         '/add': (context) => Add(),
         '/home': (context) => Home(),
         '/register': (context) => Register(),
+        '/search': (context) => SearchPage()
       },
     );
   }
@@ -140,13 +144,15 @@ class _HomeState extends State<Home> {
             const EdgeInsets.fromLTRB(24, 12, 24, 12), // Reduziert das Padding
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(24)),
-          boxShadow: [
-            BoxShadow(
-              color: bottomNavBgColor.withOpacity(0.3),
-              offset: const Offset(0, 20),
-              blurRadius: 20,
-            ),
-          ],
+          boxShadow: darkMode
+              ? [
+                  BoxShadow(
+                    color: bottomNavBgColor.withOpacity(0.3),
+                    offset: const Offset(0, 20),
+                    blurRadius: 20,
+                  ),
+                ]
+              : null,
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
@@ -155,7 +161,7 @@ class _HomeState extends State<Home> {
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
             backgroundColor: bottomNavBgColor,
-            selectedItemColor: Colors.amber[800],
+            selectedItemColor: Colors.red[600],
             unselectedItemColor: Colors.white,
             iconSize: 28,
             selectedFontSize: 12,

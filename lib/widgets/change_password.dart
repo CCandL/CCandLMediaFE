@@ -126,14 +126,6 @@ class _LoginState extends State<ChangePassword> {
     return Scaffold(
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
-        title: Text(
-          'Change Password',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            decoration: TextDecoration.none,
-            color: darkMode ? Colors.white : darkBackground,
-          ),
-        ),
         centerTitle: true,
         backgroundColor: darkMode ? darkBackground : Colors.grey[100],
         elevation: darkMode ? 0 : 1, // Kein Schatten im Dark Mode

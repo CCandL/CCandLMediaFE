@@ -5,3 +5,4 @@ export 'settings.dart';
 export 'change_password.dart';
 export 'edit_profile_page.dart';
 export 'subscriptions.dart';
+export 'search.dart';

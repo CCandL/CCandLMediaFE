@@ -1,16 +1,14 @@
-import 'package:ccandl_media/main.dart';
-import 'package:ccandl_media/widgets/edit_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeContent extends StatefulWidget {
-  const HomeContent({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  State<HomeContent> createState() => _HomeContentState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _HomeContentState extends State<HomeContent> {
+class _SearchPageState extends State<SearchPage> {
   bool darkMode = false;
   Color darkBackground = const Color(0xFF1C1C1E);
   Color darkContainerBg = Colors.grey[800]!;
@@ -34,7 +32,7 @@ class _HomeContentState extends State<HomeContent> {
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
         title: Text(
-          'Home',
+          'Search',
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
@@ -44,29 +42,8 @@ class _HomeContentState extends State<HomeContent> {
         centerTitle: true,
         backgroundColor: darkMode ? darkBackground : Colors.grey[100],
         elevation: 1,
+        // scrolledUnderElevation: double.infinity,
         leading: null,
-        actions: [
-          // Hier werden die Widgets für die rechte Seite der AppBar hinzugefügt
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/search');
-              },
-              child: const Icon(Icons.search),
-            ),
-          ),
-          // Weitere Widgets können hier hinzugefügt werden
-        ],
-      ),
-      body: Center(
-        child: Text(
-          'Add Content',
-          style: TextStyle(
-            fontSize: 24,
-            color: darkMode ? Colors.white : Colors.black,
-          ),
-        ),
       ),
     );
   }

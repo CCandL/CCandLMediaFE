@@ -102,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding: const EdgeInsets.only(bottom: 15.0),
                 child: buildAccountOptionRow(
                   context,
-                  "Account settings",
+                  "Edit profile",
                   route: MaterialPageRoute(
                       builder: (context) => const EditProfilePage()),
                 ),
