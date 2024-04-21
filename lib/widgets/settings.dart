@@ -3,6 +3,7 @@ import 'package:ccandl_media/widgets/src.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ccandl_media/widgets/edit_profile_page.dart';
 import 'package:ccandl_media/widgets/change_password.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,27 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       darkMode = prefs.getBool('darkMode') ?? false;
     });
+  }
+
+  _launchEmailSupport() async {
+    final Uri _emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'Support@ccandl.online',
+      queryParameters: {
+        'subject': 'Support-Request',
+        'body': 'Here you can describe your request or your problem.',
+      },
+    );
+
+    try {
+      if (await canLaunch(_emailLaunchUri.toString())) {
+        await launch(_emailLaunchUri.toString());
+      } else {
+        throw 'Konnte E-Mail nicht öffnen';
+      }
+    } catch (e) {
+      print('Fehler beim Öffnen der E-Mail: $e');
+    }
   }
 
   _saveDarkMode(bool value) async {
@@ -109,12 +131,12 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: buildAccountOptionRow(context, "Language",
+                  child: buildAccountOptionRow(context, "Saved code examples",
                       route: MaterialPageRoute(
                           builder: (context) => const EditProfilePage()))),
               Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
-                  child: buildAccountOptionRow(context, "Privacy and security",
+                  child: buildAccountOptionRow(context, "Support",
                       route: MaterialPageRoute(
                           builder: (context) => const EditProfilePage()))),
               const SizedBox(
@@ -275,32 +297,60 @@ class _SettingsPageState extends State<SettingsPage> {
 
   InkWell buildAccountOptionRow(BuildContext context, String title,
       {PageRoute? route}) {
-    return InkWell(
-      onTap: () {
-        if (route != null) {
-          navigatorKey.currentState?.push(route);
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: .0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
+    if (title == "Support") {
+      return InkWell(
+        onTap: () {
+          _launchEmailSupport();
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: .0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[600],
+                ),
               ),
-            ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
-            )
-          ],
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return InkWell(
+        onTap: () {
+          if (route != null) {
+            navigatorKey.currentState?.push(route);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: .0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[600],
+                ),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+              )
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

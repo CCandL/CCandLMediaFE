@@ -1,4 +1,6 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class _SearchPageState extends State<SearchPage> {
   bool darkMode = false;
   Color darkBackground = const Color(0xFF1C1C1E);
   Color darkContainerBg = Colors.grey[800]!;
+  TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -26,25 +29,47 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
+  _onSubmitted(String value) {
+    // Hier können Sie den eingereichten Suchwert verwenden
+    print('Suche eingereicht: $value');
+    // Zum Beispiel: Sie könnten eine API-Anfrage starten oder die Suchergebnisse aktualisieren
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: darkMode ? darkBackground : Colors.grey[100],
       appBar: AppBar(
-        title: Text(
-          'Search',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            decoration: TextDecoration.none,
-            color: darkMode ? Colors.white : darkBackground,
-          ),
-        ),
         centerTitle: true,
         backgroundColor: darkMode ? darkBackground : Colors.grey[100],
         elevation: 1,
-        // scrolledUnderElevation: double.infinity,
         leading: null,
+        actions: [
+          Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(300),
+              child: SizedBox(
+                width: 550,
+                child: AnimSearchBar(
+                  width: 400,
+                  textController: textController,
+                  onSuffixTap: () {
+                    setState(() {
+                      textController.clear();
+                    });
+                  },
+                  onSubmitted: _onSubmitted,
+                  helpText: "Search Text...",
+                  autoFocus: true,
+                  closeSearchOnSuffixTap: true,
+                  animationDurationInMilli: 1000,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
+      body: Container(),
     );
   }
 }

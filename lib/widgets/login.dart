@@ -219,7 +219,7 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             Navigator.pushNamed(context, '/register');
                           },
-                          child: Text('Noch kein Konto? Registrieren'),
+                          child: const Text('Noch kein Konto? Registrieren'),
                         ),
                       ],
                     ),

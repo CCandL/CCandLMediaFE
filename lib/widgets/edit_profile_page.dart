@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:html' as html;
+import 'package:flutter/services.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({super.key});
+  const EditProfilePage({Key? key}) : super(key: key);
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -12,8 +14,8 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool hidePassword = true;
-  Color darkBackground = Color(0xFF1C1C1E);
-  Color lightGray = Color(0xFFB0B0B3);
+  Color darkBackground = const Color(0xFF1C1C1E);
+  Color lightGray = const Color(0xFFB0B0B3);
   bool darkMode = false;
   final ImagePicker _picker = ImagePicker();
 
@@ -29,7 +31,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           style: TextStyle(
             fontFamily: 'Roboto',
             decoration: TextDecoration.none,
-            // color: darkMode ? Colors.white : Colors.black,
           ),
         ),
         centerTitle: true,
@@ -41,7 +42,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             color: Color.fromARGB(255, 226, 106, 152),
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            _showUploadChoiceDialog();
           },
         ),
       ),
@@ -109,56 +110,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                           if (cameraPermissionStatus.isGranted &&
                               galleryPermissionStatus.isGranted) {
-                            showModalBottomSheet(
+                            _showUploadChoiceDialog();
+                          } else {
+                            // Inform the user about the missing permissions
+                            showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return SafeArea(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      ListTile(
-                                        leading: Icon(Icons.photo_library),
-                                        title: Text('Foto auswählen',
-                                            style: TextStyle(
-                                              color: darkMode
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            )),
-                                        onTap: () async {
-                                          Navigator.pop(context);
-                                          final XFile? image =
-                                              await _picker.pickImage(
-                                                  source: ImageSource.gallery);
-                                          if (image != null) {
-                                            // Hier kannst du den Code hinzufügen, um das ausgewählte Bild zu speichern oder anzuzeigen
-                                          }
-                                        },
-                                      ),
-                                      ListTile(
-                                        leading: Icon(Icons.camera_alt),
-                                        title: Text('Kamera öffnen',
-                                            style: TextStyle(
-                                              color: darkMode
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            )),
-                                        onTap: () async {
-                                          Navigator.pop(context);
-                                          final XFile? image =
-                                              await _picker.pickImage(
-                                                  source: ImageSource.camera);
-                                          if (image != null) {
-                                            // Hier kannst du den Code hinzufügen, um das aufgenommene Bild zu speichern oder anzuzeigen
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                return AlertDialog(
+                                  title: const Text('Berechtigungsfehler'),
+                                  content: const Text(
+                                      'Bitte erlauben Sie den Zugriff auf Kamera und Fotos in den Einstellungen.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
                                 );
                               },
                             );
-                          } else {
-                            // Hier kannst du den Code hinzufügen, um den Benutzer über die fehlenden Berechtigungen zu informieren
                           }
                         },
                         child: Container(
@@ -249,6 +221,63 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
       ),
     );
+  }
+
+  void _showUploadChoiceDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: Text('Foto auswählen',
+                    style: TextStyle(
+                      color: darkMode ? Colors.white : Colors.black,
+                    )),
+                onTap: () async {
+                  Navigator.pop(context);
+                  _pickImageFromGallery();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: Text('Kamera öffnen',
+                    style: TextStyle(
+                      color: darkMode ? Colors.white : Colors.black,
+                    )),
+                onTap: () async {
+                  Navigator.pop(context);
+                  _takePhoto();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _pickImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      // Handle picked image
+    }
+  }
+
+  void _takePhoto() async {
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.camera,
+    );
+
+    if (pickedFile != null) {
+      // Handle taken photo
+    }
   }
 
   Widget buildTextField(String labelText, String initialText,

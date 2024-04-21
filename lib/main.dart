@@ -7,8 +7,17 @@ import 'package:ccandl_media/widgets/add.dart';
 import 'package:ccandl_media/widgets/settings.dart';
 import 'package:ccandl_media/widgets/register.dart';
 import 'package:ccandl_media/widgets/login.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChannels.platform.setMethodCallHandler((call) async {
+    if (call.method == 'url_launcher#canLaunch') {
+      return true;
+    }
+    return null;
+  });
+
   runApp(MyApp());
 }
 
