@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,14 +28,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String firstName = "";
   String lastName = "";
 
+  // Text editing controllers
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    _getUserInformations();
     _getSessionToken();
+    _getUserInformations();
+
+    // Set the initial text for the controllers
+    usernameController.text = username;
+    firstNameController.text = firstName;
+    lastNameController.text = lastName;
+    emailController.text = email;
   }
 
-  _getSessionToken() async {
+  Future<void> _getSessionToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? sessionToken = prefs.getString('session_token');
     if (sessionToken != null) {
@@ -47,28 +58,38 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   _getUserInformations() async {
-    var headers = {'Authorization': 'Bearer 123'};
-    var request = http.Request(
-        'POST', Uri.parse('http://localhost/app/api/v1/obj/users/0/settings'));
+    try {
+      var headers = {'Authorization': 'Bearer 123'};
+      var request = http.Request('POST',
+          Uri.parse('http://localhost/app/api/v1/obj/users/0/settings'));
 
-    request.headers.addAll(headers);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      String responseData = await response.stream.bytesToString();
-      print(responseData);
+      if (response.statusCode == 200) {
+        String responseData = await response.stream.bytesToString();
+        print(responseData);
 
-      Map<String, dynamic> jsonResponse = json.decode(responseData);
+        Map<String, dynamic> jsonResponse = json.decode(responseData);
 
-      setState(() {
-        username = jsonResponse['data']['username'];
-        email = jsonResponse['data']['email'];
-        firstName = jsonResponse['data']['first_name'];
-        lastName = jsonResponse['data']['last_name'];
-      });
-    } else {
-      print(response.reasonPhrase);
+        setState(() {
+          username = jsonResponse['data']['username'];
+          email = jsonResponse['data']['email'];
+          firstName = jsonResponse['data']['first_name'];
+          lastName = jsonResponse['data']['last_name'];
+
+          // Update the controllers with the fetched data
+          usernameController.text = username;
+          firstNameController.text = firstName;
+          lastNameController.text = lastName;
+          emailController.text = email;
+        });
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (e) {
+      print('Error fetching user information: $e');
     }
   }
 
@@ -183,10 +204,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(
                 height: 20,
               ),
-              buildTextField("Username", username, false, darkMode),
-              buildTextField("First name", firstName, false, darkMode),
-              buildTextField("Last name", lastName, false, darkMode),
-              buildTextField("E-mail", email, false, darkMode),
+              buildTextField("Username", usernameController, false, darkMode),
+              buildTextField(
+                  "First name", firstNameController, false, darkMode),
+              buildTextField("Last name", lastNameController, false, darkMode),
+              buildTextField("E-mail", emailController, false, darkMode),
               const SizedBox(
                 height: 10,
               ),
@@ -218,7 +240,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   OutlinedButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      // TODO: Implement save functionality
+                      _saveProfile();
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.green[600],
@@ -305,10 +328,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Widget buildTextField(String labelText, String initialText,
-      bool isPasswordTextField, bool darkMode) {
-    TextEditingController controller = TextEditingController(text: initialText);
+  void _saveProfile() {
+    // TODO: Implement saving profile changes
+    // You can extract the values from the controllers and send them to your backend API to update the user's profile
+    String updatedUsername = usernameController.text;
+    String updatedFirstName = firstNameController.text;
+    String updatedLastName = lastNameController.text;
+    String updatedEmail = emailController.text;
 
+    // Send the updated data to your backend API
+    // ...
+
+    // Optionally, you can show a snackbar or toast to inform the user about the success or failure of the operation
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Profile updated successfully')),
+    );
+  }
+
+  Widget buildTextField(String labelText, TextEditingController controller,
+      bool isPasswordTextField, bool darkMode) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(

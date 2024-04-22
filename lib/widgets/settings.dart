@@ -315,9 +315,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: Colors.grey[600],
                 ),
               ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
+              const Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey,
+                ),
               )
             ],
           ),
@@ -343,10 +346,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: Colors.grey[600],
                 ),
               ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-              )
+              const Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
         ),
