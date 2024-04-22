@@ -21,13 +21,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Color lightGray = const Color(0xFFB0B0B3);
   bool darkMode = false;
   final ImagePicker _picker = ImagePicker();
+  late String savedSessionToken = "";
 
   String username = "";
   String email = "";
   String firstName = "";
   String lastName = "";
-  String savedSessionToken = '';
 
+  // Text editing controllers
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -58,7 +59,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   _getUserInformations() async {
     try {
-      var headers = {'Authorization': savedSessionToken};
+      var headers = {'Authorization': 'Bearer 123'};
       var request = http.Request('POST',
           Uri.parse('http://localhost/app/api/v1/obj/users/0/settings'));
 
@@ -115,7 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             color: Color.fromARGB(255, 226, 106, 152),
           ),
           onPressed: () {
-            _showUploadChoiceDialog();
+            Navigator.of(context).pop();
           },
         ),
       ),
@@ -175,36 +176,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () async {
-                          final PermissionStatus cameraPermissionStatus =
-                              await Permission.camera.request();
-                          final PermissionStatus galleryPermissionStatus =
-                              await Permission.photos.request();
-
-                          if (cameraPermissionStatus.isGranted &&
-                              galleryPermissionStatus.isGranted) {
-                            _showUploadChoiceDialog();
-                          } else {
-                            // Inform the user about the missing permissions
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Berechtigungsfehler'),
-                                  content: const Text(
-                                      'Bitte erlauben Sie den Zugriff auf Kamera und Fotos in den Einstellungen.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
+                        onTap: () {
+                          _showUploadChoiceDialog();
                         },
                         child: Container(
                           height: 40,

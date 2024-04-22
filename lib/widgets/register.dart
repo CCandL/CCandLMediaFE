@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -10,10 +13,27 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
 
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
+  late TextEditingController emailController;
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
+    emailController = TextEditingController();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+  }
+
   String _email = '';
   String _password = '';
   String _firstName = '';
   String _lastName = '';
+  String _username = '';
   bool _agreeToTerms = false;
   bool hidePassword = true;
 
@@ -26,6 +46,8 @@ class _RegisterState extends State<Register> {
         print('Passwort: $_password');
         print('First Name: $_firstName');
         print('Last Name: $_lastName');
+        print('Username: $_username');
+        _registerUser();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -33,6 +55,30 @@ class _RegisterState extends State<Register> {
           ),
         );
       }
+    }
+  }
+
+  void _registerUser() async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'POST', Uri.parse('http://localhost/app/api/v1/obj/users/0/register'));
+    request.body = json.encode({
+      "first_name": _firstName,
+      "last_name": _lastName,
+      "email": _email,
+      "username": _username,
+      "password": _password,
+      "rank": "user",
+      "darkmode": "1"
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
     }
   }
 
@@ -75,15 +121,20 @@ class _RegisterState extends State<Register> {
               child: Column(
                 children: [
                   const SizedBox(height: 7.5),
-                  buildTextField('Username', TextEditingController(), false),
+                  buildTextField('Username', usernameController, false,
+                      (value) => _username = value!),
                   const SizedBox(height: 7.5),
-                  buildTextField('Password', TextEditingController(), true),
+                  buildTextField('Password', passwordController, true,
+                      (value) => _password = value!),
                   const SizedBox(height: 7.5),
-                  buildTextField('E-Mail', TextEditingController(), false),
+                  buildTextField('E-Mail', emailController, false,
+                      (value) => _email = value!),
                   const SizedBox(height: 7.5),
-                  buildTextField('First name', TextEditingController(), false),
+                  buildTextField('First name', firstNameController, false,
+                      (value) => _firstName = value!),
                   const SizedBox(height: 7.5),
-                  buildTextField('Last name', TextEditingController(), false),
+                  buildTextField('Last name', lastNameController, false,
+                      (value) => _lastName = value!),
                   const SizedBox(height: 7.5),
                   Row(
                     children: [
@@ -134,7 +185,7 @@ class _RegisterState extends State<Register> {
   }
 
   Widget buildTextField(String labelText, TextEditingController controller,
-      bool isPasswordTextField) {
+      bool isPasswordTextField, void Function(String) onSave) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: ConstrainedBox(
@@ -176,6 +227,7 @@ class _RegisterState extends State<Register> {
               color: Colors.black,
             ),
           ),
+          onChanged: onSave,
         ),
       ),
     );
