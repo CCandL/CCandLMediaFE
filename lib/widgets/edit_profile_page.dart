@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -17,6 +22,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Color lightGray = const Color(0xFFB0B0B3);
   bool darkMode = false;
   final ImagePicker _picker = ImagePicker();
+
+  String username = "";
+  String email = "";
+  String firstName = "";
+  String lastName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInformations();
+  }
+
+  _getUserInformations() async {
+    var headers = {'Authorization': 'Bearer 123'};
+    var request = http.Request(
+        'POST', Uri.parse('http://localhost/app/api/v1/obj/users/0/settings'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseData = await response.stream.bytesToString();
+      print(responseData);
+
+      Map<String, dynamic> jsonResponse = json.decode(responseData);
+
+      setState(() {
+        username = jsonResponse['data']['username'];
+        email = jsonResponse['data']['email'];
+        firstName = jsonResponse['data']['first_name'];
+        lastName = jsonResponse['data']['last_name'];
+      });
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,10 +199,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(
                 height: 20,
               ),
-              buildTextField("Username", "_Max_", false, darkMode),
-              buildTextField("First name", "Max", false, darkMode),
-              buildTextField("Last name", "Mustermann", false, darkMode),
-              buildTextField("E-mail", "max@mustermann.de", false, darkMode),
+              buildTextField("Username", username, false, darkMode),
+              buildTextField("First name", firstName, false, darkMode),
+              buildTextField("Last name", lastName, false, darkMode),
+              buildTextField("E-mail", email, false, darkMode),
               const SizedBox(
                 height: 10,
               ),

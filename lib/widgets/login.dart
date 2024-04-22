@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
         var headers = {'Content-Type': 'application/json'};
         var request = http.Request(
           'POST',
-          Uri.parse('https://ccandl.online/app/api/v1/obj/users/0/login'),
+          Uri.parse('http://localhost/app/api/v1/obj/users/0/login'),
         );
         request.body = json.encode({"username": _email, "password": _password});
         request.headers.addAll(headers);

@@ -163,44 +163,39 @@ class _HomeContentState extends State<HomeContent> {
       bool isPasswordTextField) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 360.0,
+      child: TextField(
+        controller: controller,
+        obscureText: isPasswordTextField && hidePassword,
+        style: const TextStyle(
+          fontSize: 14.0,
         ),
-        child: TextField(
-          controller: controller,
-          obscureText: isPasswordTextField && hidePassword,
-          style: const TextStyle(
-            fontSize: 14.0,
-          ),
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
-                    },
-                    icon: hidePassword
-                        ? const Icon(
-                            Icons.visibility_off,
-                            color: Colors.red,
-                          )
-                        : const Icon(
-                            Icons.visibility,
-                            color: Colors.green,
-                          ),
-                  )
-                : null,
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+          suffixIcon: isPasswordTextField
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      hidePassword = !hidePassword;
+                    });
+                  },
+                  icon: hidePassword
+                      ? const Icon(
+                          Icons.visibility_off,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Icons.visibility,
+                          color: Colors.green,
+                        ),
+                )
+              : null,
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          hintStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
       ),
