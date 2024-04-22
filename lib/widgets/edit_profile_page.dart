@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:html' as html;
 import 'package:flutter/services.dart';
 
 class EditProfilePage extends StatefulWidget {

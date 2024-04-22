@@ -165,7 +165,7 @@ class _HomeContentState extends State<HomeContent> {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          maxWidth: 570.0,
+          maxWidth: 360.0,
         ),
         child: TextField(
           controller: controller,
