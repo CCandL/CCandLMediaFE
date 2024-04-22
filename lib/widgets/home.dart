@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
-
   @override
   State<HomeContent> createState() => _HomeContentState();
 }
@@ -15,7 +14,6 @@ class _HomeContentState extends State<HomeContent> {
   bool isFavorite = false;
   TextEditingController commentController = TextEditingController();
   bool hidePassword = true;
-
   @override
   void initState() {
     super.initState();
@@ -163,39 +161,44 @@ class _HomeContentState extends State<HomeContent> {
       bool isPasswordTextField) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: TextField(
-        controller: controller,
-        obscureText: isPasswordTextField && hidePassword,
-        style: const TextStyle(
-          fontSize: 14.0,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 300.0,
         ),
-        decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-          suffixIcon: isPasswordTextField
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidePassword = !hidePassword;
-                    });
-                  },
-                  icon: hidePassword
-                      ? const Icon(
-                          Icons.visibility_off,
-                          color: Colors.red,
-                        )
-                      : const Icon(
-                          Icons.visibility,
-                          color: Colors.green,
-                        ),
-                )
-              : null,
-          labelText: labelText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        child: TextField(
+          controller: controller,
+          obscureText: isPasswordTextField && hidePassword,
+          style: const TextStyle(
+            fontSize: 14.0,
+          ),
+          decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        hidePassword = !hidePassword;
+                      });
+                    },
+                    icon: hidePassword
+                        ? const Icon(
+                            Icons.visibility_off,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.visibility,
+                            color: Colors.green,
+                          ),
+                  )
+                : null,
+            labelText: labelText,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
       ),

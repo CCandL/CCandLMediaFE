@@ -22,6 +22,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Color lightGray = const Color(0xFFB0B0B3);
   bool darkMode = false;
   final ImagePicker _picker = ImagePicker();
+  late String savedSessionToken = "";
 
   String username = "";
   String email = "";
@@ -32,6 +33,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     _getUserInformations();
+    _getSessionToken();
+  }
+
+  _getSessionToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? sessionToken = prefs.getString('session_token');
+    if (sessionToken != null) {
+      setState(() {
+        savedSessionToken = sessionToken;
+      });
+    }
   }
 
   _getUserInformations() async {
